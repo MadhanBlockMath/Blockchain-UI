@@ -1,0 +1,143 @@
+.page-container {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #f3f4f6;
+    padding: 1rem;
+    position: relative;
+  }
+  
+  .top-left-image {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    width: 96px; /* Adjust width as needed */
+    height: auto; /* Maintain aspect ratio */
+  }
+  
+  .container {
+    background-color: #fff;
+    padding: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    max-width: 800px; /* Adjust the width as needed */
+    width: 80%;
+  }
+  .register-container {
+    background-color: #fff;
+    padding: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    max-width: 800px; /* Adjust the width as needed */
+    width: 30%;
+  }
+  h2 {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    color: #333;
+    font-size: 1.75rem;
+  }
+  
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1rem;
+  }
+  
+  label {
+    font-weight: 600;
+    color: #4a5568;
+    margin-bottom: 0.5rem;
+  }
+  
+  input, select {
+    padding: 0.5rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 0.375rem;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  
+  input:focus, select:focus {
+    outline: none;
+    border-color: #3182ce;
+    box-shadow: 0 0 0 1px none;
+  }
+  
+  button {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 0.375rem;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    opacity: 0.9;
+  }
+  
+  .text-red-600 {
+    color: #e53e3e;
+  }
+  
+  .text-red-600:hover {
+    color: #c53030;
+  }
+  
+  .text-blue-600 {
+    color: #3182ce;
+  }
+  
+  .text-blue-600:hover {
+    color: #2b6cb0;
+  }
+  
+  .mt-1 {
+    margin-top: 0.25rem;
+  }
+  
+  .mt-2 {
+    margin-top: 0.5rem;
+  }
+  
+  .mt-4 {
+    margin-top: 1rem;
+  }
+  
+  .grid {
+    display: grid;
+  }
+  
+  .grid-cols-1 {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+  }
+  
+  .md\:grid-cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  
+  .md\:grid-cols-4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .md\:grid-cols-5 {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+  
+  .md\:grid-cols-8 {
+    grid-template-columns: repeat(8, minmax(0, 1fr));
+  }
+  .gap-4 {
+    gap: 1rem;
+  }
+  
+  .mb-4 {
+    margin-bottom: 1rem;
+  }
+  
+  .space-y-4 > * + * {
+    margin-top: 1rem;
+  }
+  

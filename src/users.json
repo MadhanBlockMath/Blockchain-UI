@@ -1,0 +1,10 @@
+{
+    "users": {
+      "89060009_neeraj@gs1india.org": { "email": "89060009_neeraj@gs1india.org", "password": "password" },
+      "VLCC_Miru@gmail.com": { "email": "VLCC_Miru@gmail.com", "password": "password" },
+      "VLCC_Gya@gmail.com": { "email": "VLCC_Gya@gmail.com", "password": "password" },
+      "VLCC_Rumste@gmail.com": { "email": "VLCC_Rumste@gmail.com", "password": "password" },
+      "VLCC_Sasoma@gmail.com": { "email": "VLCC_Sasoma@gmail.com", "password": "password" },
+      "Retailer": { "email": "Retailer", "password": "password" }
+    }
+  }
