@@ -9,13 +9,13 @@ const RegistrationPage = () => {
   const [orgs, setOrgs] = useState([{ orgname: '', orgpolicy: 'read', users: [{ usertype: 'User', username: '', usermailId: '', password: '' }] }]);
   const [gs1Org, setGs1Org] = useState(false);
   const [showModal, setShowModal] = useState(false);
-  const [usernameExists, setUsernameExists] = useState(false);
+  const [usermailidExists, setUsermailidExists] = useState(false);
   const navigate = useNavigate();
 
-  const checkUsernameExists = async (username) => {
+  const checkUsermailidExists = async (usermailid) => {
     try {
-      const response = await axios.get('http://localhost:4000/check-username', {
-        params: { username },
+      const response = await axios.get('http://20.244.10.93:3009/check-usermail', {
+        params: { usermailid },
       });
       console.log(response.data);
       return response.data;
@@ -63,21 +63,21 @@ const RegistrationPage = () => {
     setOrgs(updatedOrgs);
   };
 
-  const handleUsernameChange = async (orgIndex, userIndex, value) => {
-    const usernameExists = await checkUsernameExists(value);
-    setUsernameExists(usernameExists);
-    handleUserChange(orgIndex, userIndex, 'username', value);
+  const handleUsermailChange = async (orgIndex, userIndex, value) => {
+    const usermailidExists = await checkUsermailidExists(value);
+    setUsermailidExists(usermailidExists);
+    handleUserChange(orgIndex, userIndex, 'usermailId', value);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (usernameExists) {
-      alert('Username already exists. Please choose a different username.');
+    if (usermailidExists) {
+      alert('Usermailid already exists. Please choose a different username.');
       return;
     }
     console.log('Submitting orgs:', orgs, 'Make GS1 Default:', gs1Org, 'project name', projectname);
     try {
-      const response = await axios.post('http://localhost:4000/register', { projectname, orgs, gs1Org }, {
+      const response = await axios.post('http://20.244.10.93:3009/register', { projectname, orgs, gs1Org }, {
         headers: {
           'Content-Type': 'application/json'
         }
@@ -100,12 +100,22 @@ const RegistrationPage = () => {
   };
 
   return (
-    <div className="page-container">
-      <img
-        src="https://www.gs1india.org/wp-content/uploads/2022/06/logo-600x402-1-600x402.png"
-        alt="Top Left Image"
-        className="top-left-image"
-      />
+    <div className="page-container relative">
+  {/* <img
+    src="https://www.gs1belu.org/sites/gs1belu/files/styles/banner/public/2020-10/GS1_Corp_Visual_Size4_RGB_2014-12-17.png?h=ecbffee2&itok=UPOULwv2"
+    alt="GS1 India Facebook"
+    className="absolute top-0 left-0 w-auto h-1/2 opacity-15 pointer-events-none z-0"
+  />
+  <img
+    src="https://www.gs1belu.org/sites/gs1belu/files/styles/banner/public/2020-10/GS1_Corp_Visual_Size4_RGB_2014-12-17.png?h=ecbffee2&itok=UPOULwv2"
+    alt="GS1 India Facebook"
+    className="absolute bottom-0 left-0 w-auto h-1/2 opacity-15 pointer-events-none z-0"
+  /> */}
+  <img
+    src="https://www.gs1india.org/wp-content/uploads/2022/06/logo-600x402-1-600x402.png"
+    alt="Top Left Image"
+    className="top-left-image"
+  />
       <div className="container">
         <h2 className='font-bold'>Register</h2>
         <form onSubmit={handleSubmit}>
@@ -147,7 +157,7 @@ const RegistrationPage = () => {
                     <option value="both">Both</option>
                   </select>
                 </div>
-                <div className="">
+                <div className="button-container md:col-span-1 flex items-center">
                   {orgIndex > 0 && (
                     <button
                       type="button"
@@ -157,21 +167,19 @@ const RegistrationPage = () => {
                       -
                     </button>
                   )}
-                  {orgIndex === orgs.length - 1 && (
-                    <button
-                      type="button"
-                      className="bg-blue-600 text-white m-2 mt-6 rounded hover:bg-blue-700"
-                      onClick={addOrg}
-                    >
-                      +
-                    </button>
-                  )}
+                  <button
+                    type="button"
+                    className="bg-blue-600 text-white m-2 mt-6 rounded hover:bg-blue-700"
+                    onClick={addOrg}
+                  >
+                    +
+                  </button>
                 </div>
               </div>
               <div className="users-container space-y-4">
                 {org.users.map((user, userIndex) => (
                   <div key={userIndex} className="user-container grid grid-cols-1 md:grid-cols-5 gap-4 mb-4 p-4 border border-gray-200 rounded-lg">
-                    <div>
+                    <div className="md:col-span-2">
                       <label htmlFor={`usertype-${orgIndex}-${userIndex}`} className="block text-gray-700 font-bold">User Type:</label>
                       <select
                         id={`usertype-${orgIndex}-${userIndex}`}
@@ -183,39 +191,17 @@ const RegistrationPage = () => {
                         <option value="User">User</option>
                       </select>
                     </div>
-                    <div>
-                      <label htmlFor={`username-${orgIndex}-${userIndex}`} className="block text-gray-700 font-bold">Username:</label>
-                      <input
-                        type="text"
-                        id={`username-${orgIndex}-${userIndex}`}
-                        value={user.username}
-                        onChange={(e) => handleUsernameChange(orgIndex, userIndex, e.target.value)}
-                        required
-                        className="mt-1 block w-full p-1 border border-gray-300 rounded"
-                      />
-                      {usernameExists && <p className="text-red-600">Username already exists</p>}
-                    </div>
-                    <div>
+                    <div className="md:col-span-2">
                       <label htmlFor={`usermailId-${orgIndex}-${userIndex}`} className="block text-gray-700 font-bold">User Email:</label>
                       <input
                         type="email"
                         id={`usermailId-${orgIndex}-${userIndex}`}
                         value={user.usermailId}
-                        onChange={(e) => handleUserChange(orgIndex, userIndex, 'usermailId', e.target.value)}
+                        onChange={(e) => handleUsermailChange(orgIndex, userIndex, e.target.value)}
                         required
                         className="mt-1 block w-full p-1 border border-gray-300 rounded"
                       />
-                    </div>
-                    <div>
-                      <label htmlFor={`password-${orgIndex}-${userIndex}`} className="block text-gray-700 font-bold">Password:</label>
-                      <input
-                        type="password"
-                        id={`password-${orgIndex}-${userIndex}`}
-                        value={user.password}
-                        onChange={(e) => handleUserChange(orgIndex, userIndex, 'password', e.target.value)}
-                        required
-                        className="mt-1 block w-full p-1 border border-gray-300 rounded"
-                      />
+                      {usermailidExists && <p className="text-red-600">Usermailid already exists</p>}
                     </div>
                     <div className="flex items-center">
                       {userIndex > 0 && (
@@ -248,7 +234,7 @@ const RegistrationPage = () => {
               id="gs1Org"
               checked={gs1Org}
               onChange={(e) => setGs1Org(e.target.checked)}
-              className="md:col-span-1 mr-2 "
+              className="md:col-span-1 mr-1"
             />
             <label htmlFor="gs1Org" className="md:col-span-6 block text-gray-700 font-bold">Allow GS1 as Default Organization</label>
           </div>

@@ -40,7 +40,7 @@ const withAuth = (WrappedComponent) => {
 
 const getAuthToken = async (username) => {
   try {
-    const response = await axios.get('http://localhost:4000/get-auth-token', {
+    const response = await axios.get('http://20.244.10.93:3009/get-auth-token', {
       params: { username }
     });
     return response.data.token;
@@ -51,7 +51,7 @@ const getAuthToken = async (username) => {
 
 const validateAuthToken = async (token) => {
   try {
-    const response = await axios.get('http://localhost:4000/protected', {
+    const response = await axios.get('http://20.244.10.93:3009/protected', {
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`,

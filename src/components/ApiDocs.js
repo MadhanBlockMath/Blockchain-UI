@@ -4,29 +4,31 @@ import { useNavigate } from 'react-router-dom';
 
 const ApiDocs = () => {
   const [swaggerUrl, setSwaggerUrl] = useState('');
+  const [authToken, setAuthToken] = useState('');
+  const [username, setUserName] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
+    const token = sessionStorage.getItem('token');
+    const user = sessionStorage.getItem('user');
+
+    if (!user) {
+      navigate('/LoginPage');
+      return;
+    }
+
+    setAuthToken(token);
+    setUserName(user);
+
     const fetchSwaggerUrl = async () => {
-      const username = sessionStorage.getItem('user');
-      // const authToken = sessionStorage.getItem('token');
-      if (!username) {
-        navigate('/login');
-        return;
-      }
-
       try {
-        const authTokenResponse = await axios.get('http://localhost:4000/get-auth-token', {
-          params: { username },
-        });
-
-        const authToken = authTokenResponse.data.token;
-
-        const response = await axios.get('http://localhost:4000/get-swagger-uri', {
-          params: { username },
+        console.log("token",token);
+        console.log("user",user);
+        const response = await axios.get('http://20.244.10.93:3009/get-swagger-url', {
+          params: { username: user },
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${authToken}`,
+            'Authorization': `Bearer ${token}`,
           },
         });
 
