@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import './Sidebar.css'
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
+import './Sidebar.css';
+
 const LoadingModal = ({ message }) => (
   <div className="fixed inset-0 bg-gray-600 bg-opacity-75 flex items-center justify-center z-50">
     <div className="bg-white p-4 rounded-md shadow-lg">
@@ -33,8 +34,15 @@ const LoadingModal = ({ message }) => (
 
 const Sidebar = ({ isOpen, toggleSidebar }) => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [isLoggingOut, setIsLoggingOut] = useState(false);
   const [logoutMessage, setLogoutMessage] = useState('');
+  const [activeLink, setActiveLink] = useState('');
+
+  useEffect(() => {
+    setActiveLink(location.pathname);
+    console.log(location.pathname)
+  }, [location.pathname]);
 
   const handleLogout = () => {
     setIsLoggingOut(true);
@@ -47,6 +55,10 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
       navigate('/');
       setIsLoggingOut(false); // Resetting loading state
     }, 1000);
+  };
+
+  const handleLinkClick = (path) => {
+    setActiveLink(path);
   };
 
   return (
@@ -77,34 +89,57 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
         {isOpen && (
           <ul>
             <li className="mb-4">
-              <Link to="HomePage" className="custom-button">
+              <Link
+                to="/HomePage"
+                className={`custom-button ${activeLink === '/HomePage' ? 'bg-blue-950' : ''}`}
+                onClick={() => handleLinkClick('/HomePage')}
+              >
                 Home
               </Link>
             </li>
             <li className="mb-4">
-              <Link to="api-docs" className="custom-button">
+              <Link
+                to="/api-docs"
+                className={`custom-button ${activeLink === '/api-docs' ? 'bg-blue-950' : ''}`}
+                onClick={() => handleLinkClick('/api-docs')}
+              >
                 API Docs
               </Link>
             </li>
             <li className="mb-4">
-              <button className="custom-button w-full text-left">
+              <button
+                className={`custom-button w-full text-left ${activeLink.startsWith('/report') ? 'bg-blue-950' : ''}`}
+                onClick={() => handleLinkClick('/report')}
+              >
                 Reports
               </button>
               <ul className="pl-4">
                 <li className="mb-4">
-                  <Link to="event-report" className="custom-button">
+                  <Link
+                    to="/event-report"
+                    className={`custom-button ${activeLink === '/event-report' ? 'bg-blue-950' : ''}`}
+                    onClick={() => handleLinkClick('/event-report')}
+                  >
                     Event Report
                   </Link>
                 </li>
                 <li className="mb-4">
-                  <Link to="batch-report" className="custom-button">
+                  <Link
+                    to="/batch-report"
+                    className={`custom-button ${activeLink === '/batch-report' ? 'bg-blue-950' : ''}`}
+                    onClick={() => handleLinkClick('/batch-report')}
+                  >
                     Batch Report
                   </Link>
                 </li>
               </ul>
             </li>
-            <li >
-              <Link to="add-user" className="custom-button">
+            <li>
+              <Link
+                to="/add-user"
+                className={`custom-button ${activeLink === '/add-user' ? 'bg-blue-950' : ''}`}
+                onClick={() => handleLinkClick('/add-user')}
+              >
                 Add / Delete User
               </Link>
             </li>
