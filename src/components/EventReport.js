@@ -125,14 +125,14 @@ const EventReport = () => {
   };
 
   return (
-    <div className="p-4">
+    <div className="p-4 fs">
       <div className="flex space-x-4 mb-4">
         <input type="date" value={fromDate} onChange={handleFromDateChange} className="border p-2 rounded" placeholder="Start Date" />
         <input type="date" value={toDate} onChange={handleToDateChange} className="border p-2 rounded" placeholder="End Date" />
         <input type="text" value={glnInput} onChange={handleGlnInputChange} placeholder="GLN" className="border p-2 rounded" />
         <input type="text" value={batchIdInput} onChange={handleBatchIdInputChange} placeholder="Batch ID" className="border p-2 rounded" />
-        <button onClick={handleSearch} className="bg-blue-500 text-white p-2 rounded">Search</button>
-        <button onClick={handleReset} className="bg-gray-500 text-white p-2 rounded">Reset</button>
+        <button onClick={handleSearch} className="bg-blue-500 text-white p-1 rounded">Search</button>
+        <button onClick={handleReset} className="bg-gray-500 text-white p-1 rounded">Reset</button>
       </div>
       <div className="overflow-x-auto">
         <table className="min-w-full bg-white border">
@@ -156,7 +156,7 @@ const EventReport = () => {
                 <td className="border px-3 py-2">{item.location}</td>
                 <td className="border px-3 py-2">{item.mongoid}</td>
                 <td className="border px-3 py-2">{new Date(item.recordedTimestamp).toLocaleString()}</td>
-                <td className="border px-3 py-2">
+                <td className="border eventBut py-2">
                   <button 
                     className="bg-blue-500 text-white p-1 rounded" 
                     onClick={(e) => handleViewEventClick(e, item)}

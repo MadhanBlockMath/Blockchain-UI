@@ -1,0 +1,18 @@
+.sideBarOpen {
+    background-color: #002c6c;
+    width: 13rem;
+}
+
+.sideBarClose{
+    background-color: #002c6c;
+    width: 4rem;
+}
+/* component.css */
+.custom-button {
+    @apply block p-2 rounded hover:bg-blue-950;
+  }
+  
+
+  .clr{
+    color: white;
+  }

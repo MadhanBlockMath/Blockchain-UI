@@ -11,7 +11,9 @@
     z-index: 1;
 
 }
-
+.fs{
+    font-size: 13px;
+}
 .top-left-image {
     position: absolute;
     top: 1rem;
@@ -143,4 +145,9 @@ button:hover {
     position: absolute;
     top: 0;
     left: 0;
+  }
+
+  .eventBut{
+    padding-left: 1.30rem;
+    padding-right: 0.75rem;
   }
