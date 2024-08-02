@@ -145,7 +145,7 @@ const BatchReport = () => {
   };
 
   return (
-    <div className="p-4">
+    <div className="p-4 fs">
       <div className="flex space-x-4 mb-4">
         <input
           type="date"
@@ -175,10 +175,10 @@ const BatchReport = () => {
           placeholder="Batch ID"
           className="border p-2 rounded"
         />
-        <button onClick={handleSearch} className="bg-blue-500 text-white p-2 rounded">
+        <button onClick={handleSearch} className="bg-blue-500 text-white p-1 rounded">
           Search
         </button>
-        <button onClick={handleReset} className="bg-gray-500 text-white p-2 rounded">
+        <button onClick={handleReset} className="bg-gray-500 text-white p-1 rounded">
           Reset
         </button>
       </div>
@@ -197,7 +197,7 @@ const BatchReport = () => {
       </div>
 
       <div className="overflow-x-auto">
-        <table className="min-w-full bg-white border border-gray-300">
+        <table className="min-w-full bg-white border">
           <thead>
             <tr>
               <th className="border px-4 py-2">S.no</th>
@@ -210,15 +210,15 @@ const BatchReport = () => {
           </thead>
           <tbody>
             {currentData.map((item, index) => (
-              <tr key={index} className="border-t">
+              <tr key={index} className="cursor-pointer hover:bg-gray-100">
                 <td className="border px-3 py-2">{startIndex + index + 1}</td>
                 <td className="border px-3 py-2">{item.batch}</td>
                 <td className="border px-3 py-2">{item.department}</td>
                 <td className="border px-3 py-2">{new Date(item.recordedTimestamp).toLocaleString()}</td>
                 <td className="border px-3 py-2">{item.gln}</td>
-                <td className="border px-3 py-2">
+                <td className="border eventBut py-2">
                   <button
-                    className="bg-blue-500 text-white px-4 py-2 rounded-md"
+                    className="bg-blue-500 text-white p-1 rounded"
                     onClick={() => setSelectedRowData(item)}
                   >
                     View More

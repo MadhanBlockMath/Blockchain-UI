@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
+import './Sidebar.css';
 
 const LoadingModal = ({ message }) => (
   <div className="fixed inset-0 bg-gray-600 bg-opacity-75 flex items-center justify-center z-50">
@@ -39,6 +40,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
   const handleLogout = () => {
     setIsLoggingOut(true);
     setLogoutMessage('Logging out...');
+    console.log(logoutMessage,"find",isLoggingOut)
 
     // Simulating logout delay (you can remove setTimeout in actual implementation)
     setTimeout(() => {
@@ -50,12 +52,12 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
   };
 
   return (
-    <div className={`fixed bg-blue-100 text-gray-800 ${isOpen ? 'w-64' : 'w-16'} h-full p-4 transition-width duration-300 flex flex-col justify-between`}>
+    <div className={`fixed text-gray-800 ${isOpen ? 'sideBarOpen' : 'sideBarClose'} h-full p-4 transition-width duration-300 flex flex-col justify-between clr fs`}>
       <div>
         <div className="flex items-center justify-between mb-8">
           {isOpen && (
             <img
-              src="https://www.gs1india.org/wp-content/uploads/2022/06/logo-600x402-1-600x402.png"
+              src="https://prod.gs1datakart.org/assets/GS1_India_White_orange-D_5OpZvg.svg"
               alt="GS1 India Logo"
               className="w-24 h-auto"
             />
@@ -75,33 +77,44 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
         {isOpen && (
           <ul>
             <li className="mb-4">
-              <Link to="HomePage" className="block p-2 rounded hover:bg-blue-200">
+              <NavLink to="HomePage" className="custom-button" activeClassName="active">
                 Home
-              </Link>
+              </NavLink>
             </li>
             <li className="mb-4">
-              <Link to="api-docs" className="block p-2 rounded hover:bg-blue-200">
+              <NavLink to="api-docs" className="custom-button" activeClassName="active">
                 API Docs
-              </Link>
+              </NavLink>
             </li>
             <li className="mb-4">
-              <Link to="event-report" className="block p-2 rounded hover:bg-blue-200">
-                Event Report
-              </Link>
+              <button className="custom-button w-full text-left">
+                Reports
+              </button>
+              <ul className="pl-4">
+                <li className="mb-4">
+                  <NavLink to="event-report" className="custom-button" activeClassName="active">
+                    Event Report
+                  </NavLink>
+                </li>
+                <li className="mb-4">
+                  <NavLink to="batch-report" className="custom-button" activeClassName="active">
+                    Batch Report
+                  </NavLink>
+                </li>
+              </ul>
             </li>
-            <li className="mb-4">
-              <Link to="batch-report" className="block p-2 rounded hover:bg-blue-200">
-                Batch Report
-              </Link>
+            <li>
+              <NavLink to="add-user" className="custom-button" activeClassName="active">
+                Add / Delete User
+              </NavLink>
             </li>
-            
           </ul>
         )}
       </div>
       {isOpen && (
         <button
           onClick={handleLogout}
-          className="block p-2 rounded hover:bg-blue-200 text-left"
+          className="custom-button text-left"
         >
           Logout
         </button>
