@@ -20,3 +20,8 @@
 .bg-blue-950 {
     background-color: #1e3a8a; /* Adjust this color as per your requirements */
 }
+
+.custom-button.active {
+    background-color: #1e40af; /* Change this to your desired active color */
+  }
+  
