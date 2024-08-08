@@ -40,7 +40,7 @@ const HomePage = () => {
   return (
     <div className="flex items-center justify-center min-h-screen bg-white-10">
       <div className="bg-white p-5 rounded-lg shadow-md max-w-full w-full animate-fadeIn">
-        <h1 className="text-3xl font-semibold mb-10 text-center">WELCOME TO BLOCKCHAIN NETWORK</h1>
+        <h1 className="text-3xl font-bold mb-10 text-center">WELCOME TO BLOCKCHAIN NETWORK</h1>
         {/* Display user details */}
         {userDetails && (
           <div className="space-y-4">
@@ -49,60 +49,41 @@ const HomePage = () => {
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div
-                className={`bg-blue-100 hover:bg-blue-300 py-4 px-6 rounded-lg cursor-pointer ${
-                  selectedBox === 'usermailid' ? 'transform scale-105' : ''
-                }`}
-                onClick={() => handleBoxClick('usermailid')}
+                className={`bg-blue-100 hover:bg-blue-300 py-4 px-6 rounded-lg cursor-pointer`}
               >
                 <p className="text-sm text-blue-800">User Mail ID:</p>
-                <p className="text-lg font-semibold">{userDetails.usermailid}</p>
+                <p className="text-lg font-normal">{userDetails.usermailid}</p>
               </div>
               <div
-                className={`bg-orange-100 hover:bg-orange-300 py-4 px-6 rounded-lg cursor-pointer ${
-                  selectedBox === 'orgname' ? 'transform scale-105' : ''
-                }`}
-                onClick={() => handleBoxClick('orgname')}
+                className={`bg-orange-100 hover:bg-orange-300 py-4 px-6 rounded-lg cursor-pointer`}
               >
                 <p className="text-sm text-orange-800">Organization Name:</p>
-                <p className="text-lg font-semibold">{userDetails.orgname}</p>
+                <p className="text-lg font-normal">{userDetails.orgname}</p>
               </div>
               <div
-                className={`bg-blue-100 hover:bg-blue-300 py-4 px-6 rounded-lg cursor-pointer ${
-                  selectedBox === 'orgid' ? 'transform scale-105' : ''
-                }`}
-                onClick={() => handleBoxClick('orgid')}
+                className={`bg-blue-100 hover:bg-blue-300 py-4 px-6 rounded-lg cursor-pointer`}
               >
                 <p className="text-sm text-blue-800">Organization ID:</p>
-                <p className="text-lg font-semibold">{userDetails.orgid}</p>
+                <p className="text-lg font-normal">{userDetails.orgid}</p>
               </div>
               <div
-                className={`bg-orange-100 hover:bg-orange-300 py-4 px-6 rounded-lg cursor-pointer ${
-                  selectedBox === 'usertype' ? 'transform scale-105' : ''
-                }`}
-                onClick={() => handleBoxClick('usertype')}
+                className={`bg-orange-100 hover:bg-orange-300 py-4 px-6 rounded-lg cursor-pointer`}
               >
                 <p className="text-sm text-orange-800">User Type:</p>
-                <p className="text-lg font-semibold">{userDetails.usertype}</p>
+                <p className="text-lg font-normal">{userDetails.usertype}</p>
               </div>
               <div
-                className={`bg-blue-100 hover:bg-blue-300 py-4 px-6 rounded-lg cursor-pointer ${
-                  selectedBox === 'projectid' ? 'transform scale-105' : ''
-                }`}
-                onClick={() => handleBoxClick('projectid')}
+                className={`bg-blue-100 hover:bg-blue-300 py-4 px-6 rounded-lg cursor-pointer`}
               >
                 <p className="text-sm text-blue-800">Network ID:</p>
-                <p className="text-lg font-semibold">{userDetails.networkid}</p>
+                <p className="text-lg font-normal">{userDetails.networkid}</p>
               </div>
               <div
-                className={`bg-orange-100 hover:bg-orange-300 py-4 px-6 rounded-lg cursor-pointer ${
-                  selectedBox === 'projectname' ? 'transform scale-105' : ''
-                }`}
-                onClick={() => handleBoxClick('projectname')}
+                className={`bg-orange-100 hover:bg-orange-300 py-4 px-6 rounded-lg cursor-pointer`}
               >
                 <p className="text-sm text-orange-800">Project Name:</p>
-                <p className="text-lg font-semibold">{userDetails.projectname}</p>
+                <p className="text-lg font-normal">{userDetails.projectname}</p>
               </div>
-              {/* Add more fields as needed */}
             </div>
           </div>
         )}
