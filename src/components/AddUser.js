@@ -47,7 +47,7 @@ const ConfirmationDialog = ({ message, onConfirm, onCancel }) => (
 );
 
 // Main AddUser Component
-const AddUser = ({ checkUsermailidExists }) => {
+const AddUser = () => {
   const [orgs, setOrgs] = useState([{ orgpolicy: 'read', users: [{ usertype: 'User', usermailId: '' }] }]);
   const [usermailidExists, setUsermailidExists] = useState(false);
   const [userDetails, setUserDetails] = useState(null);
@@ -87,6 +87,18 @@ const AddUser = ({ checkUsermailidExists }) => {
     fetchUserDetails();
   }, []);
 
+  const checkUsermailidExists = async (usermailid) => {
+    try {
+      const response = await axios.get('http://20.244.10.93:3009/check-usermail', {
+        params: { usermailid },
+      });
+      console.log(response.data);
+      return response.data;
+    } catch (error) {
+      console.error('Error checking username:', error);
+      return false;
+    }
+  };
   const handleUsermailChange = async (orgIndex, userIndex, value) => {
     const usermailidExists = await checkUsermailidExists(value);
     setUsermailidExists(usermailidExists);

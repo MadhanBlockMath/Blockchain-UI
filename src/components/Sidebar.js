@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import './Sidebar.css';
 
@@ -36,11 +36,40 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
   const navigate = useNavigate();
   const [isLoggingOut, setIsLoggingOut] = useState(false);
   const [logoutMessage, setLogoutMessage] = useState('');
+  const [userDetails, setUserDetails] = useState(null);
+
+  useEffect(() => {
+    // Function to fetch user details
+    const fetchUserDetails = async () => {
+      try {
+        const token = sessionStorage.getItem('token'); // Get the token from session storage
+        const response = await fetch('http://20.244.10.93:3009/userdetails', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ usermailid: sessionStorage.getItem('user') }),
+        });
+
+        if (response.ok) {
+          const userData = await response.json();
+          setUserDetails(userData); // Set user details in state
+        } else {
+          console.error('Failed to fetch user details');
+        }
+      } catch (error) {
+        console.error('Error fetching user details:', error);
+      }
+    };
+
+    fetchUserDetails(); // Call the function when component mounts
+  }, []);
 
   const handleLogout = () => {
     setIsLoggingOut(true);
     setLogoutMessage('Logging out...');
-    console.log(logoutMessage,"find",isLoggingOut)
+    console.log(logoutMessage, "find", isLoggingOut)
 
     // Simulating logout delay (you can remove setTimeout in actual implementation)
     setTimeout(() => {
@@ -49,6 +78,10 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
       navigate('/');
       setIsLoggingOut(false); // Resetting loading state
     }, 1000);
+  };
+
+  const openInNewTab = (url) => {
+    window.open(url, '_blank', 'noopener,noreferrer');
   };
 
   return (
@@ -103,11 +136,20 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
                 </li>
               </ul>
             </li>
-            <li>
-              <NavLink to="add-user" className="custom-button" activeClassName="active">
-                Add / Delete User
-              </NavLink>
-            </li>
+            {userDetails && userDetails.usertype === 'Admin' && (
+              <li className="mb-4">
+                <NavLink to="add-user" className="custom-button" activeClassName="active">
+                  Add / Delete User
+                </NavLink>
+              </li>
+            )}
+            {userDetails && userDetails.usertype === 'NetworkAdmin' && (
+              <li className="mb-4">
+                <button onClick={() => openInNewTab('http://explorer.gs1indiadatakart.org/')} className="custom-button">
+                  Explorer
+                </button>
+              </li>
+            )}
           </ul>
         )}
       </div>
