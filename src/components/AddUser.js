@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import './AddUser.css';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import LoadingModule from './LoadingModule';
 
 // Loading Modal Component
 const LoadingModal = ({ message, onClose }) => (
@@ -58,8 +60,18 @@ const AddUser = () => {
   const [loadingMessage, setLoadingMessage] = useState('');
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
   const [confirmDeleteEmail, setConfirmDeleteEmail] = useState('');
-
+  const [showTimeoutModal, setShowTimeoutModal] = useState(false);
+  const navigate = useNavigate();
   useEffect(() => {
+    const user = sessionStorage.getItem('user');
+
+    if (!user) {
+      setShowTimeoutModal(true);
+      setTimeout(() => {
+        navigate('/LoginPage');
+      }, 2000); // Delay to show the modal for 2 seconds before redirecting
+      return;
+    }
     // Fetch user details from API
     const fetchUserDetails = async () => {
       try {
@@ -205,6 +217,7 @@ const AddUser = () => {
 
   return (
     <div className="page-container relative">
+      {showTimeoutModal && <LoadingModule message="Session Timed Out. Redirecting to Login Page..." />}
       <div className="container">
         <div className="flex justify-center mb-4">
           <button

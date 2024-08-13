@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import LoadingModule from './LoadingModule';
 
 const BatchReport = () => {
   const [fromDate, setFromDate] = useState('');
@@ -15,10 +17,20 @@ const BatchReport = () => {
   const displayPageSize = 1000;
   const [totalData, setTotalData] = useState(0);
   const [selectedRange, setSelectedRange] = useState('');
-
+  const [showTimeoutModal, setShowTimeoutModal] = useState(false);
+  const navigate = useNavigate();
   useEffect(() => {
     const token = sessionStorage.getItem('token');
     setAuthToken(token);
+    const user = sessionStorage.getItem('user');
+
+    if (!user) {
+      setShowTimeoutModal(true);
+      setTimeout(() => {
+        navigate('/LoginPage');
+      }, 2000); // Delay to show the modal for 2 seconds before redirecting
+      return;
+    }
   }, []);
 
   useEffect(() => {
@@ -146,6 +158,7 @@ const BatchReport = () => {
 
   return (
     <div className="p-4 fs">
+       {showTimeoutModal && <LoadingModule message="Session Timed Out. Redirecting to Login Page..." />}
       <div className="flex space-x-4 mb-4">
         <input
           type="date"

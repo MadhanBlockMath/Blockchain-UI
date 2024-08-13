@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import LoadingModule from './LoadingModule';
 
 const ApiDocs = () => {
   const [swaggerUrl, setSwaggerUrl] = useState('');
   const [authToken, setAuthToken] = useState('');
   const [username, setUserName] = useState('');
+  const [showTimeoutModal, setShowTimeoutModal] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -13,7 +15,10 @@ const ApiDocs = () => {
     const user = sessionStorage.getItem('user');
 
     if (!user) {
-      navigate('/LoginPage');
+      setShowTimeoutModal(true);
+      setTimeout(() => {
+        navigate('/LoginPage');
+      }, 2000);
       return;
     }
 
@@ -44,16 +49,19 @@ const ApiDocs = () => {
   }, [navigate]);
 
   return (
-    swaggerUrl ? (
-      <iframe
-        src={swaggerUrl}
-        title="API Docs"
-        className="w-full h-full"
-        style={{ height: 'calc(100vh - 4rem)' }} // Adjust height as needed
-      ></iframe>
-    ) : (
-      <div>Loading...</div>
-    )
+    <div>
+      {showTimeoutModal && <LoadingModule message="Session Timed Out. Redirecting to Login Page..." />}
+      {swaggerUrl ? (
+        <iframe
+          src={swaggerUrl}
+          title="API Docs"
+          className="w-full h-full"
+          style={{ height: 'calc(100vh - 4rem)' }} // Adjust height as needed
+        ></iframe>
+      ) : (
+        <div>Loading...</div>
+      )}
+    </div>
   );
 };
 

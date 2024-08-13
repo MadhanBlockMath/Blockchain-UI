@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import LoadingModule from './LoadingModule';
 
 const EventReport = () => {
   const [fromDate, setFromDate] = useState('');
@@ -9,8 +11,18 @@ const EventReport = () => {
   const [tableData, setTableData] = useState([]);
   const [authToken, setAuthToken] = useState('');
   const [selectedRowData, setSelectedRowData] = useState(null);
-
+  const [showTimeoutModal, setShowTimeoutModal] = useState(false);
+  const navigate = useNavigate();
   useEffect(() => {
+    const user = sessionStorage.getItem('user');
+
+    if (!user) {
+      setShowTimeoutModal(true);
+      setTimeout(() => {
+        navigate('/LoginPage');
+      }, 2000); // Delay to show the modal for 2 seconds before redirecting
+      return;
+    }
     fetchAuthToken();
   }, []);
 
@@ -126,6 +138,7 @@ const EventReport = () => {
 
   return (
     <div className="p-4 fs">
+       {showTimeoutModal && <LoadingModule message="Session Timed Out. Redirecting to Login Page..." />}
       <div className="flex space-x-4 mb-4">
         <input type="date" value={fromDate} onChange={handleFromDateChange} className="border p-2 rounded" placeholder="Start Date" />
         <input type="date" value={toDate} onChange={handleToDateChange} className="border p-2 rounded" placeholder="End Date" />
