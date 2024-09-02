@@ -39,7 +39,7 @@ const LoginPage = () => {
         sessionStorage.setItem('user', usermailid);
         console.log('Access Token:', token);
         console.log('User:', usermailid);
-        setLoadingMessage('Login succeeded!');
+        setLoadingMessage('Network Connected!');
         setTimeout(() => {
           navigate('/InputPage/Homepage');
         }, 1000);

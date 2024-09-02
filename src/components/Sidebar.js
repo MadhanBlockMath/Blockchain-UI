@@ -139,7 +139,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
             {userDetails && userDetails.usertype === 'Admin' && (
               <li className="mb-4">
                 <NavLink to="add-user" className="custom-button" activeClassName="active">
-                  Add / Delete User
+                  Manage Users
                 </NavLink>
               </li>
             )}
@@ -161,7 +161,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
           Logout
         </button>
       )}
-      {isLoggingOut && <LoadingModal message={logoutMessage} />}
+     <div className='text-black' >{isLoggingOut && <LoadingModal message={logoutMessage} />}</div>
     </div>
   );
 };

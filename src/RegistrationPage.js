@@ -61,6 +61,7 @@ const RegistrationPage = () => {
       ...org, users: org.users.map((user, j) => (j === userIndex ? { ...user, [field]: value } : user))
     } : org));
     setOrgs(updatedOrgs);
+    console.log(orgs)
   };
 
   const handleUsermailChange = async (orgIndex, userIndex, value) => {
@@ -188,7 +189,7 @@ const RegistrationPage = () => {
                         className="mt-1 block w-full p-1 border border-gray-300 rounded"
                       >
                         <option value="Admin">Admin</option>
-                        <option value="Network Admin">Network Admin</option>
+                        <option value="NetworkAdmin">NetworkAdmin</option>
                         <option value="User">User</option>
                       </select>
                     </div>

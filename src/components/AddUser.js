@@ -11,7 +11,7 @@ const LoadingModal = ({ message, onClose }) => (
       <div className="flex items-center space-x-2">
         <span>{message}</span>
       </div>
-      {message.includes('Adding user...') || message.includes('Deleting user...') ? null : (<div className="mt-4 flex justify-end">
+      {message.includes('Adding user...') || message.includes('Deleting user...') || message.includes('Updating user access...') ? null : (<div className="mt-4 flex justify-end">
         <button
           onClick={onClose}
           className="bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 font-bold"
@@ -50,7 +50,7 @@ const ConfirmationDialog = ({ message, onConfirm, onCancel }) => (
 
 // Main AddUser Component
 const AddUser = () => {
-  const [orgs, setOrgs] = useState([{ orgpolicy: 'read', users: [{ usertype: 'User', usermailId: '' }] }]);
+  const [orgs, setOrgs] = useState([{ orgpolicy: 'read', users: [{ usertype: 'User', usermailId: '', useraccess: 'Both' }] }]);
   const [usermailidExists, setUsermailidExists] = useState(false);
   const [userDetails, setUserDetails] = useState(null);
  // const [responseMessage, setResponseMessage] = useState('');
@@ -63,6 +63,9 @@ const AddUser = () => {
   const [showTimeoutModal, setShowTimeoutModal] = useState(false);
   const navigate = useNavigate();
   useEffect(() => {
+    // setOrgs([{ orgpolicy: 'read', users: [{ usertype: 'User', usermailId: '', useraccess: 'Both' }] }]);
+    setDeleteEmail('');
+    setUsermailidExists(false);
     const user = sessionStorage.getItem('user');
 
     if (!user) {
@@ -144,7 +147,7 @@ const AddUser = () => {
 
     try {
       setLoadingMessage('Adding user...');
-    setIsLoading(true);
+      setIsLoading(true);
       for (let org of orgs) {
         for (let user of org.users) {
           const postData = {
@@ -152,11 +155,12 @@ const AddUser = () => {
             newUser: {
               usermailid: user.usermailId,
               usertype: user.usertype,
-              orgname,
+              useraccess: user.useraccess,
+              orgname: orgname,
             },
           };
-
-          const response = await axios.post('http://20.244.10.93:3009/addUser', postData, {
+          console.log(postData)
+          const response = await axios.post('http://20.244.10.93:3009/addUserWithAttributes', postData, {
             headers: {
               'Content-Type': 'application/json',
             },
@@ -173,6 +177,44 @@ const AddUser = () => {
     } catch (error) {
       console.error('Error adding user:', error);
       setLoadingMessage('Failed to add user. Please try again.');
+    }
+  };
+
+  const handleSubmitModifyUserAccess = async (e) => {
+    e.preventDefault();
+
+    const adminEmail = userDetails.usermailid;
+    const orgname = userDetails?.orgname;
+
+    try {
+      setLoadingMessage('Updating user access...');
+      setIsLoading(true);
+
+      for (let org of orgs) {
+        for (let user of org.users) {
+          const postData = {
+            adminEmail: adminEmail,
+            department: user.usermailId,    // department as usermailId
+            userorg: orgname,
+            newUserAccess: user.useraccess, // access as newUserAccess
+          };
+          console.log(postData);
+
+          const response = await axios.post('http://20.244.10.93:3009/updateUserType', postData, {
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          });
+
+          console.log('API Response:', response.data);
+        }
+      }
+      setOrgs([{ orgpolicy: 'read', users: [{ usertype: 'User', usermailId: '' }] }]);
+      //setUsermailidExists(false);
+      setLoadingMessage('User access updated successfully!');
+    } catch (error) {
+      console.error('Error updating user access:', error);
+      setLoadingMessage('Failed to update user access. Please try again.');
     }
   };
 
@@ -214,6 +256,18 @@ const AddUser = () => {
   const handleCloseModal = () => {
     setIsLoading(false);
   };
+  const handleAccessChange = (orgIndex, userIndex, value) => {
+    const updatedOrgs = [...orgs];
+    updatedOrgs[orgIndex].users[userIndex].useraccess = value;
+    setOrgs(updatedOrgs);
+  };
+
+  const handleUsertypeChange = (orgIndex, userIndex, value) => {
+    const updatedOrgs = [...orgs];
+    updatedOrgs[orgIndex].users[userIndex].usertype = value;
+    setOrgs(updatedOrgs);
+  };
+
 
   return (
     <div className="page-container relative">
@@ -222,21 +276,21 @@ const AddUser = () => {
         <div className="flex justify-center mb-4">
           <button
             className={`tab-button ${activeTab === 'addUser' ? 'active' : ''}`}
-            onClick={() => {
-              setActiveTab('addUser');
-              // setResponseMessage('');
-            }}
+            onClick={() => setActiveTab('addUser')}
           >
             Add User
           </button>
           <button
             className={`tab-button ${activeTab === 'deleteUser' ? 'active' : ''}`}
-            onClick={() => {
-              setActiveTab('deleteUser');
-              // setResponseMessage('');
-            }}
+            onClick={() => setActiveTab('deleteUser')}
           >
             Delete User
+          </button>
+          <button
+            className={`tab-button ${activeTab === 'modifyUserAccess' ? 'active' : ''}`}
+            onClick={() => setActiveTab('modifyUserAccess')}
+          >
+            Modify UserAccess
           </button>
         </div>
 
@@ -247,19 +301,49 @@ const AddUser = () => {
                 <div className="users-container space-y-4">
                   {org.users.map((user, userIndex) => (
                     <div key={userIndex} className="mb-4 p-4 border border-gray-200 rounded-lg">
-                      <div className="md:col-span-2">
-                        <label htmlFor={`usermailId-${orgIndex}-${userIndex}`} className="block text-gray-700 font-bold">User Email:</label>
-                        <input
-                          type="email"
-                          id={`usermailId-${orgIndex}-${userIndex}`}
-                          value={user.usermailId}
-                          onChange={(e) => handleUsermailChange(orgIndex, userIndex, e.target.value)}
-                          required
-                          className="mt-1 block w-full p-1 border border-gray-300 rounded"
-                        />
-                        {usermailidExists && <p className="text-red-600">Usermailid already exists</p>}
-                      </div>
+                      <label htmlFor={`usermailId-${orgIndex}-${userIndex}`} className="text-gray-700 font-bold">User Email : </label>
+                      <input
+                        type="email"
+                        id={`usermailId-${orgIndex}-${userIndex}`}
+                        value={user.usermailId}
+                        onChange={(e) => handleUsermailChange(orgIndex, userIndex, e.target.value)}
+                        required
+                        className="mt-1 w-[83%] p-1 border border-gray-300 rounded"
+                      /><br /><br />
+                      <label htmlFor={`access-${orgIndex}-${userIndex}`} className="text-gray-700 font-bold"> Access : </label>
+                      <select
+                        id={`access-${orgIndex}-${userIndex}`}
+                        value={user.useraccess}
+                        onChange={(e) => handleAccessChange(orgIndex, userIndex, e.target.value)}
+                        className="mt-1 w-[83%] ml-[29px] p-1 border border-gray-300 rounded"
+                        required
+                      >
+                        <option value="Both">Both</option>
+                        <option value="Read">Read</option>
+                        <option value="Write">Write</option>
+
+                      </select>
+                      <br /><br />
+                      <label htmlFor={`usertype-${orgIndex}-${userIndex}`} className="text-gray-700 font-bold mt-2">
+                        User Type :
+                      </label>
+                      <select
+                        id={`usertype-${orgIndex}-${userIndex}`}
+                        value={user.usertype}
+                        onChange={(e) => handleUsertypeChange(orgIndex, userIndex, e.target.value)}
+                        className="mt-1 w-[83%] ml-[9px] p-1 border border-gray-300 rounded"
+                        required
+                      >
+                        <option value="">Select Type</option>
+                        <option value="User">User</option>
+                        <option value="Admin">Admin</option>
+                        <option value="NetworkAdmin">Network Admin</option>
+                      </select>
+
+
+                      {usermailidExists && <p className="text-red-600">Usermailid already exists</p>}
                     </div>
+                    
                   ))}
                 </div>
               </div>
@@ -278,13 +362,13 @@ const AddUser = () => {
     <form onSubmit={handleDeleteButtonClick}>
       <div className="form-group mb-4">
         <div className='p-4 border border-gray-200 rounded-lg'>
-          <label htmlFor="deleteUsermailId" className="block text-gray-700 font-bold delete-user-label">User Email:</label>
+          <label htmlFor="deleteUsermailId" className="text-gray-700 font-bold delete-user-label">User Email : </label>
           <input
             type="email"
             id="deleteUsermailId"
             value={deleteEmail}
             onChange={(e) => setDeleteEmail(e.target.value)}
-            className="mt-1 p-1 border border-gray-300 rounded w-full"
+            className="mt-1 p-1 border border-gray-300 rounded w-[83%]"
             required
           />
         </div>
@@ -298,6 +382,46 @@ const AddUser = () => {
     </form>
   </div>
 )}
+
+        {activeTab === 'modifyUserAccess' && (
+          <form onSubmit={handleSubmitModifyUserAccess} className="tab-container">
+            {orgs.map((org, orgIndex) => (
+              <div key={orgIndex} className="org-container">
+                <div className="users-container space-y-4">
+                  {org.users.map((user, userIndex) => (
+                    <div key={userIndex} className="mb-4 p-4 border border-gray-200 rounded-lg">
+                      <label htmlFor={`usermailId-${orgIndex}-${userIndex}`} className="text-gray-700 font-bold">User Email : </label>
+                      <input
+                        type="email"
+                        id={`usermailId-${orgIndex}-${userIndex}`}
+                        value={user.usermailId}
+                        onChange={(e) => handleUsermailChange(orgIndex, userIndex, e.target.value)}
+                        required
+                        className="mt-1 w-[83%] p-1 border border-gray-300 rounded"
+                      />
+
+                      <br /><br />
+                      <label htmlFor={`access-${orgIndex}-${userIndex}`} className="text-gray-700 font-bold mt-2">Access : </label>
+                      <select
+                        id={`access-${orgIndex}-${userIndex}`}
+                        value={user.useraccess}
+                        onChange={(e) => handleAccessChange(orgIndex, userIndex, e.target.value)}
+                        className="mt-1 w-[83%] ml-[29px] p-1 border border-gray-300 rounded"
+                        required
+                      >
+                        <option value="Both">Both</option>
+                        <option value="Read">Read</option>
+                        <option value="Write">Write</option>
+                      </select>
+
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
+            <button type="submit" className="abc">Modify</button>
+          </form>
+        )}
 
 
         {isLoading && (
