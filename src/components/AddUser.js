@@ -301,21 +301,21 @@ const AddUser = () => {
                 <div className="users-container space-y-4">
                   {org.users.map((user, userIndex) => (
                     <div key={userIndex} className="mb-4 p-4 border border-gray-200 rounded-lg">
-                      <label htmlFor={`usermailId-${orgIndex}-${userIndex}`} className="text-gray-700 font-bold">User Email : </label>
+                      <label htmlFor={`usermailId-${orgIndex}-${userIndex}`} className="text-gray-700 fw text-sm">User Email :  </label>
                       <input
                         type="email"
                         id={`usermailId-${orgIndex}-${userIndex}`}
                         value={user.usermailId}
                         onChange={(e) => handleUsermailChange(orgIndex, userIndex, e.target.value)}
                         required
-                        className="mt-1 w-[83%] p-1 border border-gray-300 rounded"
+                        className="mt-1 w-[83%] ml-[5px] p-1 border border-gray-300 rounded text-sm text-gray-700"
                       /><br /><br />
-                      <label htmlFor={`access-${orgIndex}-${userIndex}`} className="text-gray-700 font-bold"> Access : </label>
+                      <label htmlFor={`access-${orgIndex}-${userIndex}`} className="text-gray-700 fw text-sm"> Access : </label>
                       <select
                         id={`access-${orgIndex}-${userIndex}`}
                         value={user.useraccess}
                         onChange={(e) => handleAccessChange(orgIndex, userIndex, e.target.value)}
-                        className="mt-1 w-[83%] ml-[29px] p-1 border border-gray-300 rounded"
+                        className="mt-1 w-[83%] ml-[29px] p-1 border border-gray-300 rounded text-gray-700"
                         required
                       >
                         <option value="Both">Both</option>
@@ -324,14 +324,14 @@ const AddUser = () => {
 
                       </select>
                       <br /><br />
-                      <label htmlFor={`usertype-${orgIndex}-${userIndex}`} className="text-gray-700 font-bold mt-2">
+                      <label htmlFor={`usertype-${orgIndex}-${userIndex}`} className="text-gray-700 fw text-sm mt-2">
                         User Type :
                       </label>
                       <select
                         id={`usertype-${orgIndex}-${userIndex}`}
                         value={user.usertype}
                         onChange={(e) => handleUsertypeChange(orgIndex, userIndex, e.target.value)}
-                        className="mt-1 w-[83%] ml-[9px] p-1 border border-gray-300 rounded"
+                        className="mt-1 w-[83%] ml-[14px] p-1 border border-gray-300 rounded fw text-gray-700"
                         required
                       >
                         <option value="">Select Type</option>
@@ -343,14 +343,14 @@ const AddUser = () => {
 
                       {usermailidExists && <p className="text-red-600">Usermailid already exists</p>}
                     </div>
-                    
+
                   ))}
                 </div>
               </div>
             ))}
             <button
               type="submit"
-              className="abc"
+              className="abc fw"
             >
               Add
             </button>
@@ -362,7 +362,7 @@ const AddUser = () => {
     <form onSubmit={handleDeleteButtonClick}>
       <div className="form-group mb-4">
         <div className='p-4 border border-gray-200 rounded-lg'>
-          <label htmlFor="deleteUsermailId" className="text-gray-700 font-bold delete-user-label">User Email : </label>
+          <label htmlFor="deleteUsermailId" className="text-gray-700 fw text-sm">User Email : </label>
           <input
             type="email"
             id="deleteUsermailId"
@@ -390,7 +390,7 @@ const AddUser = () => {
                 <div className="users-container space-y-4">
                   {org.users.map((user, userIndex) => (
                     <div key={userIndex} className="mb-4 p-4 border border-gray-200 rounded-lg">
-                      <label htmlFor={`usermailId-${orgIndex}-${userIndex}`} className="text-gray-700 font-bold">User Email : </label>
+                      <label htmlFor={`usermailId-${orgIndex}-${userIndex}`} className="text-gray-700 fw text-sm">User Email : </label>
                       <input
                         type="email"
                         id={`usermailId-${orgIndex}-${userIndex}`}
@@ -401,7 +401,7 @@ const AddUser = () => {
                       />
 
                       <br /><br />
-                      <label htmlFor={`access-${orgIndex}-${userIndex}`} className="text-gray-700 font-bold mt-2">Access : </label>
+                      <label htmlFor={`access-${orgIndex}-${userIndex}`} className="text-gray-700 fw text-sm">Access : </label>
                       <select
                         id={`access-${orgIndex}-${userIndex}`}
                         value={user.useraccess}

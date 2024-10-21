@@ -3,7 +3,7 @@
 .tab-button {
     background-color: #fff;
     color: #4a5568;
-    font-weight: bold;
+    font-weight: 450;
 }
 
 .tab-button.active {
@@ -117,3 +117,10 @@
 .abc:hover {
     background-color: #2b6cb0; /* Adjust color for hover effect */
 }
+.select-gray {
+    color: #6b7280; /* Tailwind's gray-500 */
+  }
+
+  .fw{
+    font-weight: 400;
+  }

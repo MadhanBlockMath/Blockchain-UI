@@ -12,6 +12,7 @@ const EventReport = () => {
   const [authToken, setAuthToken] = useState('');
   const [selectedRowData, setSelectedRowData] = useState(null);
   const [showTimeoutModal, setShowTimeoutModal] = useState(false);
+  const [accessMessage, setaccessMessage] = useState("");
   const navigate = useNavigate();
   useEffect(() => {
     const user = sessionStorage.getItem('user');
@@ -81,6 +82,10 @@ const EventReport = () => {
         setTableData(processedData);
       })
       .catch(error => {
+        if(error.response.data.details==="Failed to retrieve events by timestamp range"){
+          console.log("diii")
+          setaccessMessage(error.response.data.details)
+        }
         console.error('Error fetching data:', error);
       });
   };
@@ -147,6 +152,12 @@ const EventReport = () => {
         <button onClick={handleSearch} className="bg-blue-500 text-white p-1 rounded">Search</button>
         <button onClick={handleReset} className="bg-gray-500 text-white p-1 rounded">Reset</button>
       </div>
+      {accessMessage==="Failed to retrieve events by timestamp range" ? (
+        <div className="text-center text-red-500 mt-4">
+          This User does not have the Access to Read the Event Report. <br />
+          Please Contact Admin For the Read Access.
+        </div>
+      ) : (
       <div className="overflow-x-auto">
         <table className="min-w-full bg-white border">
           <thead>
@@ -182,6 +193,7 @@ const EventReport = () => {
           </tbody>
         </table>
       </div>
+      )}
 
       {selectedRowData && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">

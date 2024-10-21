@@ -18,6 +18,7 @@ const BatchReport = () => {
   const [totalData, setTotalData] = useState(0);
   const [selectedRange, setSelectedRange] = useState('');
   const [showTimeoutModal, setShowTimeoutModal] = useState(false);
+  const [accessMessage, setaccessMessage] = useState("");
   const navigate = useNavigate();
   useEffect(() => {
     const token = sessionStorage.getItem('token');
@@ -73,6 +74,11 @@ const BatchReport = () => {
       setCurrentPage(1);
     })
     .catch(error => {
+      if(error.response.data.details==="Failed to retrieve batch details by timestamp range"){
+        console.log("diii")
+        setaccessMessage(error.response.data.details)
+      }
+      console.log(error.response.data.details,"kkk")
       console.error('Error fetching data:', error);
     });
   };
@@ -208,7 +214,12 @@ const BatchReport = () => {
           ))}
         </select>
       </div>
-
+      {accessMessage==="Failed to retrieve batch details by timestamp range" ? (
+        <div className="text-center text-red-500 mt-4">
+          This User does not have the Access to Read the Batch Report. <br />
+          Please Contact Admin For the Read Access.
+        </div>
+      ) : (
       <div className="overflow-x-auto">
         <table className="min-w-full bg-white border">
           <thead>
@@ -241,9 +252,7 @@ const BatchReport = () => {
             ))}
           </tbody>
         </table>
-      </div>
-
-      <div className="flex justify-center mt-4">
+        <div className="flex justify-center mt-4">
         <button
           onClick={() => handlePageChange(currentPage - 1)}
           disabled={currentPage === 1}
@@ -268,6 +277,10 @@ const BatchReport = () => {
           Next
         </button>
       </div>
+      </div>
+    )}
+
+      
 
       {selectedRowData && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
